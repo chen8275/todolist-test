@@ -8,7 +8,20 @@
       "Bash(git commit:*)",
       "Bash(npm create:*)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(claude mcp:*)",
+      "Bash(claude:*)",
+      "Bash(cmd /c claude mcp add --transport http figma https://mcp.figma.com/mcp)",
+      "Bash(cmd /c claude mcp list)",
+      "Bash(cmd /c claude)",
+      "Bash(cmd /c start cmd /k claude)",
+      "Bash(powershell -ExecutionPolicy Bypass -File 'C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img.ps1')",
+      "Bash(powershell -ExecutionPolicy Bypass -File 'C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img2.ps1')",
+      "Bash('C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img2.output')",
+      "Bash(powershell -ExecutionPolicy Bypass -File 'C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img3.ps1')",
+      "Bash('C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img3.output')",
+      "Bash(powershell -ExecutionPolicy Bypass -File 'C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img4.ps1')",
+      "Bash('C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img4.output')"
     ]
   }
 }
