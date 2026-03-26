@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start d:/learn/github/todolist-test/index.html)",
+      "Bash(git config:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
