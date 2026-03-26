@@ -1,5 +1,4 @@
 import type { Todo, Priority } from '../types';
-import { useLang } from '../LangContext';
 import TodoItem from './TodoItem';
 
 interface Props {
@@ -11,11 +10,10 @@ interface Props {
 }
 
 export default function TodoList({ todos, onToggle, onDelete, onEdit, onPriorityChange }: Props) {
-  const { t } = useLang();
   return (
     <div className="todo-list">
       {todos.length === 0 ? (
-        <div className="empty">{t.empty}</div>
+        <div className="empty">暂无待办事项</div>
       ) : (
         todos.map(todo => (
           <TodoItem

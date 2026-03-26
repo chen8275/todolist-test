@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import type { Todo, Filter, Priority } from './types';
-import { useLang } from './LangContext';
 import TodoInput from './components/TodoInput';
 import TodoFilters from './components/TodoFilters';
 import TodoList from './components/TodoList';
 import TodoFooter from './components/TodoFooter';
-import LangSwitcher from './components/LangSwitcher';
 import './App.css';
 
 const STORAGE_KEY = 'todos';
@@ -20,7 +18,6 @@ function loadTodos(): Todo[] {
 }
 
 export default function App() {
-  const { t } = useLang();
   const [todos, setTodos] = useState<Todo[]>(loadTodos);
   const [filter, setFilter] = useState<Filter>('all');
 
@@ -63,10 +60,7 @@ export default function App() {
 
   return (
     <div className="container">
-      <div className="header">
-        <h1>{t.title}</h1>
-        <LangSwitcher />
-      </div>
+      <h1>待办事项</h1>
       <TodoInput onAdd={addTodo} />
       <TodoFilters filter={filter} onFilter={setFilter} />
       <TodoList

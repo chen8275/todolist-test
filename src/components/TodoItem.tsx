@@ -1,6 +1,11 @@
 import { useRef, useState } from 'react';
 import type { Todo, Priority } from '../types';
-import { useLang } from '../LangContext';
+
+const PRIORITY_LABEL: Record<Priority, string> = {
+  high: '高',
+  medium: '中',
+  low: '低',
+};
 
 interface Props {
   todo: Todo;
@@ -11,7 +16,6 @@ interface Props {
 }
 
 export default function TodoItem({ todo, onToggle, onDelete, onEdit, onPriorityChange }: Props) {
-  const { t } = useLang();
   const [editing, setEditing] = useState(false);
   const spanRef = useRef<HTMLSpanElement>(null);
 
@@ -71,12 +75,12 @@ export default function TodoItem({ todo, onToggle, onDelete, onEdit, onPriorityC
           value={todo.priority}
           onChange={e => onPriorityChange(todo.id, e.target.value as Priority)}
         >
-          <option value="high">{t.priority.high}</option>
-          <option value="medium">{t.priority.medium}</option>
-          <option value="low">{t.priority.low}</option>
+          {(['high', 'medium', 'low'] as Priority[]).map(p => (
+            <option key={p} value={p}>{PRIORITY_LABEL[p]}</option>
+          ))}
         </select>
-        <button onClick={startEdit} title={t.edit}>✏️</button>
-        <button onClick={() => onDelete(todo.id)} title={t.delete}>🗑️</button>
+        <button onClick={startEdit} title="编辑">✏️</button>
+        <button onClick={() => onDelete(todo.id)} title="删除">🗑️</button>
       </div>
     </div>
   );

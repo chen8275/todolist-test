@@ -14,37 +14,12 @@ body {
   max-width: 560px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 24px;
-}
-
 h1 {
+  text-align: center;
   font-size: 2rem;
   color: #333;
+  margin-bottom: 24px;
   letter-spacing: 2px;
-}
-
-.lang-switcher {
-  position: absolute;
-  right: 0;
-  padding: 6px 14px;
-  border: 2px solid #4a90e2;
-  border-radius: 20px;
-  background: #fff;
-  color: #4a90e2;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.lang-switcher:hover {
-  background: #4a90e2;
-  color: #fff;
 }
 
 .input-row {
