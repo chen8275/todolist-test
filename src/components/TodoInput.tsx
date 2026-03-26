@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import type { Priority } from '../types';
+import { useLang } from '../LangContext';
 
 interface Props {
   onAdd: (text: string, priority: Priority) => void;
 }
 
 export default function TodoInput({ onAdd }: Props) {
+  const { t } = useLang();
   const [text, setText] = useState('');
   const [priority, setPriority] = useState<Priority>('medium');
 
   function handleAdd() {
-    const t = text.trim();
-    if (!t) return;
-    onAdd(t, priority);
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    onAdd(trimmed, priority);
     setText('');
     setPriority('medium');
   }
@@ -23,14 +25,14 @@ export default function TodoInput({ onAdd }: Props) {
         value={text}
         onChange={e => setText(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && handleAdd()}
-        placeholder="添加待办事项..."
+        placeholder={t.placeholder}
       />
       <select value={priority} onChange={e => setPriority(e.target.value as Priority)}>
-        <option value="high">高</option>
-        <option value="medium">中</option>
-        <option value="low">低</option>
+        <option value="high">{t.priority.high}</option>
+        <option value="medium">{t.priority.medium}</option>
+        <option value="low">{t.priority.low}</option>
       </select>
-      <button onClick={handleAdd}>添加</button>
+      <button onClick={handleAdd}>{t.add}</button>
     </div>
   );
 }

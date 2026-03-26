@@ -1,20 +1,22 @@
 import type { Filter } from '../types';
+import { useLang } from '../LangContext';
 
 interface Props {
   filter: Filter;
   onFilter: (f: Filter) => void;
 }
 
-const FILTERS: { key: Filter; label: string }[] = [
-  { key: 'all', label: '全部' },
-  { key: 'active', label: '未完成' },
-  { key: 'done', label: '已完成' },
-];
-
 export default function TodoFilters({ filter, onFilter }: Props) {
+  const { t } = useLang();
+  const filters: { key: Filter; label: string }[] = [
+    { key: 'all', label: t.filters.all },
+    { key: 'active', label: t.filters.active },
+    { key: 'done', label: t.filters.done },
+  ];
+
   return (
     <div className="filters">
-      {FILTERS.map(({ key, label }) => (
+      {filters.map(({ key, label }) => (
         <button
           key={key}
           className={filter === key ? 'active' : ''}
