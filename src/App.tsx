@@ -71,9 +71,9 @@ export default function App() {
     <div className={`min-h-screen ${bgClass} transition-colors duration-500 flex flex-col items-center pt-24 px-4 font-sans ${textClass}`}>
 
       {/* Dog icon — fixed top-left */}
-      <div className="fixed top-8 left-12">
+      <a href="https://github.com/chen8275/todolist-test" target="_blank" rel="noopener noreferrer" className="fixed top-8 left-12">
         <Dog size={18} className={isLight ? 'text-gray-800' : 'text-white'} style={{ opacity: 0.7 }} />
-      </div>
+      </a>
 
       {/* Theme dots — fixed top-right, order: gray / white / black */}
       <div className="fixed top-8 right-8 flex items-center gap-3">
