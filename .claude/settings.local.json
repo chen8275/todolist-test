@@ -21,7 +21,13 @@
       "Bash(powershell -ExecutionPolicy Bypass -File 'C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img3.ps1')",
       "Bash('C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img3.output')",
       "Bash(powershell -ExecutionPolicy Bypass -File 'C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img4.ps1')",
-      "Bash('C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img4.output')"
+      "Bash('C:\\\\Users\\\\w10\\\\Desktop\\\\analyze_img4.output')",
+      "mcp__figma__get_design_context",
+      "mcp__figma__whoami",
+      "mcp__figma__get_metadata",
+      "Bash(cd:*)",
+      "Bash(npx tsc:*)",
+      "mcp__figma__get_screenshot"
     ]
   }
 }

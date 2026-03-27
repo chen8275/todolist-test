@@ -1,87 +1,51 @@
-import { useRef, useState } from 'react';
-import type { Todo, Priority } from '../types';
-
-const PRIORITY_LABEL: Record<Priority, string> = {
-  high: '高',
-  medium: '中',
-  low: '低',
-};
+import { Check, Trash2 } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface Props {
-  todo: Todo;
-  onToggle: (id: number) => void;
-  onDelete: (id: number) => void;
-  onEdit: (id: number, text: string) => void;
-  onPriorityChange: (id: number, priority: Priority) => void;
+  id: string;
+  text: string;
+  completed: boolean;
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
+  isLight?: boolean;
 }
 
-export default function TodoItem({ todo, onToggle, onDelete, onEdit, onPriorityChange }: Props) {
-  const [editing, setEditing] = useState(false);
-  const spanRef = useRef<HTMLSpanElement>(null);
-
-  function startEdit() {
-    setEditing(true);
-    setTimeout(() => {
-      const el = spanRef.current;
-      if (!el) return;
-      el.focus();
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      const sel = window.getSelection();
-      sel?.removeAllRanges();
-      sel?.addRange(range);
-    }, 0);
-  }
-
-  function finishEdit() {
-    const el = spanRef.current;
-    if (!el) return;
-    const newText = el.textContent?.trim() ?? '';
-    if (newText) onEdit(todo.id, newText);
-    else el.textContent = todo.text;
-    setEditing(false);
-  }
-
-  function handleKeyDown(e: React.KeyboardEvent<HTMLSpanElement>) {
-    if (e.key === 'Enter') { e.preventDefault(); finishEdit(); }
-    if (e.key === 'Escape') {
-      const el = spanRef.current;
-      if (el) el.textContent = todo.text;
-      setEditing(false);
-    }
-  }
-
+export default function TodoItem({ id, text, completed, onToggle, onDelete, isLight }: Props) {
   return (
-    <div className="todo-item">
-      <div className={`priority-bar ${todo.priority}`} />
-      <input
-        type="checkbox"
-        checked={todo.done}
-        onChange={() => onToggle(todo.id)}
-      />
-      <span
-        ref={spanRef}
-        className={`todo-text${todo.done ? ' done' : ''}`}
-        contentEditable={editing}
-        suppressContentEditableWarning
-        onBlur={finishEdit}
-        onKeyDown={handleKeyDown}
-      >
-        {todo.text}
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      className={`flex items-center gap-2 ${
+        isLight
+          ? 'bg-white/80 hover:bg-white border-gray-200'
+          : 'bg-[#001f27] hover:bg-[#002b35] border-cyan-500/10'
+      } transition-all duration-300 rounded-full px-4 py-1.5 w-full shadow-sm border group`}
+    >
+      <span className={`flex-1 text-xs font-light tracking-wide ${
+        isLight ? 'text-gray-700' : 'text-gray-200'
+      } ${completed ? 'line-through opacity-40' : ''}`}>
+        {text}
       </span>
-      <div className="item-actions">
-        <select
-          value={todo.priority}
-          onChange={e => onPriorityChange(todo.id, e.target.value as Priority)}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => onToggle(id)}
+          className={`p-1.5 rounded-md transition-all ${
+            completed
+              ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/20'
+              : 'text-gray-500 hover:text-cyan-400 hover:bg-cyan-400/10'
+          }`}
         >
-          {(['high', 'medium', 'low'] as Priority[]).map(p => (
-            <option key={p} value={p}>{PRIORITY_LABEL[p]}</option>
-          ))}
-        </select>
-        <button onClick={startEdit} title="编辑">✏️</button>
-        <button onClick={() => onDelete(todo.id)} title="删除">🗑️</button>
+          <Check size={16} strokeWidth={2.5} />
+        </button>
+        <button
+          onClick={() => onDelete(id)}
+          className="p-1.5 rounded-md text-gray-600 hover:text-red-400 hover:bg-red-400/10 transition-colors opacity-0 group-hover:opacity-100"
+        >
+          <Trash2 size={16} />
+        </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
