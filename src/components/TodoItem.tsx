@@ -41,7 +41,7 @@ export default function TodoItem({ id, text, completed, onToggle, onDelete, isLi
         </button>
         <button
           onClick={() => onDelete(id)}
-          className="p-1.5 rounded-md text-gray-600 hover:text-red-400 hover:bg-red-400/10 transition-colors opacity-0 group-hover:opacity-100"
+          className="p-1.5 rounded-md text-gray-400 hover:text-red-400 hover:bg-red-400/10 transition-colors opacity-40 group-hover:opacity-100"
         >
           <Trash2 size={16} />
         </button>
