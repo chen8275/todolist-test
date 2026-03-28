@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { Dog } from 'lucide-react';
 import TodoItemComponent from './components/TodoItem';
 import TodoInputComponent from './components/TodoInput';
+import ArchiveModal, { ArchiveEntry } from './components/ArchiveModal';
 
 interface Todo {
   id: string;
@@ -12,11 +13,21 @@ interface Todo {
 }
 
 const STORAGE_KEY = 'todos-v2';
+const ARCHIVE_KEY = 'archive-v1';
 
 function loadTodos(): Todo[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as Todo[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function loadArchive(): ArchiveEntry[] {
+  try {
+    const raw = localStorage.getItem(ARCHIVE_KEY);
+    return raw ? (JSON.parse(raw) as ArchiveEntry[]) : [];
   } catch {
     return [];
   }
@@ -28,8 +39,11 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>('black');
   const [todos, setTodos] = useState<Todo[]>(loadTodos);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [archive, setArchive] = useState<ArchiveEntry[]>(loadArchive);
+  const [showArchive, setShowArchive] = useState(false);
 
   useEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(todos)); }, [todos]);
+  useEffect(() => { localStorage.setItem(ARCHIVE_KEY, JSON.stringify(archive)); }, [archive]);
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -40,11 +54,15 @@ export default function App() {
   }
 
   function toggleTodo(id: string) {
-    setTodos(prev => prev.map(todo => {
-      if (todo.id !== id) return todo;
-      if (!todo.completed) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#06b6d4', '#0891b2', '#ffffff'] });
-      return { ...todo, completed: !todo.completed };
-    }));
+    const todo = todos.find(t => t.id === id);
+    if (!todo) return;
+    if (!todo.completed) {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#06b6d4', '#0891b2', '#ffffff'] });
+      const today = new Date();
+      const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+      setArchive(prev => [...prev, { id: todo.id + '-' + Date.now(), text: todo.text, date }]);
+    }
+    setTodos(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
   }
 
   function deleteTodo(id: string) {
@@ -135,6 +153,18 @@ export default function App() {
           </motion.p>
         )}
       </main>
+
+      {/* Archive button — fixed bottom-right */}
+      <button
+        onClick={() => setShowArchive(true)}
+        className={`fixed bottom-8 right-8 text-[10px] font-mono tracking-widest uppercase transition-colors duration-300 ${
+          isLight ? 'text-gray-400 hover:text-gray-700' : 'text-gray-600 hover:text-gray-400'
+        }`}
+      >
+        归档
+      </button>
+
+      <ArchiveModal open={showArchive} onClose={() => setShowArchive(false)} entries={archive} isLight={isLight} />
 
       {/* Background glow */}
       <div className={`fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] ${isLight ? 'bg-cyan-100/30' : 'bg-cyan-900/5'} blur-[120px] rounded-full -z-10 pointer-events-none transition-colors duration-500`} />
