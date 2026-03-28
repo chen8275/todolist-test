@@ -2,11 +2,20 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
+type Priority = 'red' | 'yellow' | 'green';
+
+const PRIORITY_COLOR: Record<Priority, string> = {
+  red: 'bg-red-500',
+  yellow: 'bg-yellow-400',
+  green: 'bg-green-500',
+};
+
 interface ArchiveEntry {
   id: string;
   text: string;
   date: string;
   completedAt?: string;
+  priority?: Priority;
 }
 
 interface Props {
@@ -182,7 +191,7 @@ export default function ArchiveModal({ open, onClose, entries, isLight }: Props)
             <ul className="flex flex-col gap-2">
               {selectedEntries.map(entry => (
                 <li key={entry.id} className={`text-xs ${detailText} flex items-start gap-2`}>
-                  <span className={`mt-0.5 shrink-0 ${accentColor} opacity-70`}>✓</span>
+                  <span className={`mt-1 shrink-0 w-2 h-2 rounded-full ${entry.priority ? PRIORITY_COLOR[entry.priority] : 'bg-gray-400'}`} />
                   <div className="flex flex-col gap-0.5">
                     <span>{entry.text}</span>
                     {entry.completedAt && (

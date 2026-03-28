@@ -1,16 +1,25 @@
 import { Check, Trash2 } from 'lucide-react';
 import { motion } from 'motion/react';
 
+type Priority = 'red' | 'yellow' | 'green';
+
+const PRIORITY_COLOR: Record<Priority, string> = {
+  red: 'bg-red-500',
+  yellow: 'bg-yellow-400',
+  green: 'bg-green-500',
+};
+
 interface Props {
   id: string;
   text: string;
   completed: boolean;
+  priority: Priority;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
   isLight?: boolean;
 }
 
-export default function TodoItem({ id, text, completed, onToggle, onDelete, isLight }: Props) {
+export default function TodoItem({ id, text, completed, priority, onToggle, onDelete, isLight }: Props) {
   return (
     <motion.div
       layout
@@ -23,6 +32,7 @@ export default function TodoItem({ id, text, completed, onToggle, onDelete, isLi
           : 'bg-[#001f27] hover:bg-[#002b35] border-cyan-500/10'
       } transition-all duration-300 rounded-full px-4 py-1.5 w-full shadow-sm border group`}
     >
+      <span className={`shrink-0 w-2 h-2 rounded-full ${PRIORITY_COLOR[priority]} ${completed ? 'opacity-30' : ''}`} />
       <span className={`flex-1 text-xs font-light tracking-wide ${
         isLight ? 'text-gray-700' : 'text-gray-200'
       } ${completed ? 'line-through opacity-40' : ''}`}>

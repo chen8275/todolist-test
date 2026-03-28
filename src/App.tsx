@@ -6,10 +6,13 @@ import TodoItemComponent from './components/TodoItem';
 import TodoInputComponent from './components/TodoInput';
 import ArchiveModal, { ArchiveEntry } from './components/ArchiveModal';
 
+type Priority = 'red' | 'yellow' | 'green';
+
 interface Todo {
   id: string;
   text: string;
   completed: boolean;
+  priority: Priority;
 }
 
 const STORAGE_KEY = 'todos-v2';
@@ -49,8 +52,8 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  function addTodo(text: string) {
-    setTodos(prev => [{ id: Math.random().toString(36).substr(2, 9), text, completed: false }, ...prev]);
+  function addTodo(text: string, priority: Priority) {
+    setTodos(prev => [{ id: Math.random().toString(36).substr(2, 9), text, completed: false, priority }, ...prev]);
   }
 
   function toggleTodo(id: string) {
@@ -61,7 +64,7 @@ export default function App() {
       const today = new Date();
       const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
       const completedAt = `${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}:${String(today.getSeconds()).padStart(2, '0')}`;
-      setArchive(prev => [...prev, { id: todo.id + '-' + Date.now(), text: todo.text, date, completedAt }]);
+      setArchive(prev => [...prev, { id: todo.id + '-' + Date.now(), text: todo.text, date, completedAt, priority: todo.priority }]);
     }
     setTodos(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
   }
@@ -130,12 +133,18 @@ export default function App() {
 
         <div className="w-full max-w-[260px] flex flex-col gap-2 mx-auto">
           <AnimatePresence mode="popLayout" initial={false}>
-            {todos.map(todo => (
+            {[...todos]
+              .sort((a, b) => {
+                const order: Record<Priority, number> = { red: 0, yellow: 1, green: 2 };
+                return order[a.priority] - order[b.priority];
+              })
+              .map(todo => (
               <TodoItemComponent
                 key={todo.id}
                 id={todo.id}
                 text={todo.text}
                 completed={todo.completed}
+                priority={todo.priority}
                 onToggle={toggleTodo}
                 onDelete={deleteTodo}
                 isLight={isLight}
