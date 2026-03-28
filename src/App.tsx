@@ -60,7 +60,8 @@ export default function App() {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#06b6d4', '#0891b2', '#ffffff'] });
       const today = new Date();
       const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
-      setArchive(prev => [...prev, { id: todo.id + '-' + Date.now(), text: todo.text, date }]);
+      const completedAt = `${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}:${String(today.getSeconds()).padStart(2, '0')}`;
+      setArchive(prev => [...prev, { id: todo.id + '-' + Date.now(), text: todo.text, date, completedAt }]);
     }
     setTodos(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
   }

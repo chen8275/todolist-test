@@ -6,6 +6,7 @@ interface ArchiveEntry {
   id: string;
   text: string;
   date: string;
+  completedAt?: string;
 }
 
 interface Props {
@@ -182,7 +183,12 @@ export default function ArchiveModal({ open, onClose, entries, isLight }: Props)
               {selectedEntries.map(entry => (
                 <li key={entry.id} className={`text-xs ${detailText} flex items-start gap-2`}>
                   <span className={`mt-0.5 shrink-0 ${accentColor} opacity-70`}>✓</span>
-                  <span>{entry.text}</span>
+                  <div className="flex flex-col gap-0.5">
+                    <span>{entry.text}</span>
+                    {entry.completedAt && (
+                      <span className={`text-[10px] font-mono ${accentColor} opacity-60`}>{entry.completedAt}</span>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
